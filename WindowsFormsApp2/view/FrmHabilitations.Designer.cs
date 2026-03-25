@@ -1,0 +1,67 @@
+﻿namespace Habilitations2024.view
+{
+    partial class FrmHabilitations
+    {
+        /// <summary>
+        /// Variable nécessaire au concepteur.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Nettoyage des ressources utilisées.
+        /// </summary>
+        /// <param name="disposing">true si les ressources managées doivent être supprimées ; sinon, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region
+
+        /// <summary>
+        /// Méthode requise pour la prise en charge du concepteur - ne modifiez pas
+        /// le contenu de cette méthode avec l'éditeur de code.
+        /// </summary>
+        /// 
+
+        
+        private void InitializeComponent()
+        {
+            /*
+            this.lstValeurs = new System.Windows.Forms.ListBox();
+            this.SuspendLayout();
+            // 
+            // lstValeurs
+            // 
+            //
+            this.lstValeurs.FormattingEnabled = true;
+            this.lstValeurs.ItemHeight = 16;
+            this.lstValeurs.Location = new System.Drawing.Point(336, 176);
+            this.lstValeurs.Name = "lstValeurs";
+            this.lstValeurs.Size = new System.Drawing.Size(120, 84);
+            this.lstValeurs.TabIndex = 0;
+            // 
+            // FrmHabilitations
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lstValeurs);
+            this.Name = "FrmHabilitations";
+            this.Text = "FrmHabilitations";
+            this.Load += new System.EventHandler(this.FrmHabilitations_Load);
+            this.ResumeLayout(false);
+            */
+
+        }
+        
+
+        #endregion
+
+    }
+}
+

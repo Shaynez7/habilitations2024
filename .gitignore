@@ -1,0 +1,24 @@
+﻿# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+
+# Logs
+*.log
+
+# Packages
+*.nupkg
+*.nuget
+
+# Node modules (si jamais utilisés)
+node_modules/
+
+# Autres fichiers temporaires
+*.tmp
+*.cache
