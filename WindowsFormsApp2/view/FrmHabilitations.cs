@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Habilitations2024.controller;
+using Habilitations2024.model;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,29 +16,226 @@ namespace Habilitations2024.view
 {
     public partial class FrmHabilitations : Form
     {
+
+        /// <summary>
+        /// Booléen pour savoir si une modification est demandée
+        /// </summary>
+        private Boolean enCoursDeModifDeveloppeur = false;
+        /// <summary>
+        /// Objet pour gérer la liste des développeurs
+        /// </summary>
+        private BindingSource bdgDeveloppeurs = new BindingSource();
+        /// <summary>
+        /// Objet pour gérer la liste des profils
+        /// </summary>
+        private BindingSource bdgProfils = new BindingSource();
+        /// <summary>
+        /// Controleur de la fenêtre
+        /// </summary>
+        private FrmHabilitationsController controller;
+
+        /// <summary>
+        /// construction des composants graphiques et appel des autres initialisations
+        /// </summary>
+        /// 
+
         public FrmHabilitations()
         {
             InitializeComponent();
+            Init();
         }
-/*
-        private void FrmHabilitations_Load(object sender, EventArgs e)
+
+
+        /// <summary>
+        /// Initialisations :
+        /// Création du controleur et remplissage des listes
+        /// </summary>
+        private void Init()
         {
-            // Chaîne de connexion à la base de données
-            string connectionString = "Server=localhost;Database=habilitations;User Id=habilitations;Password=motdepasse;";
-            // Requête SQL pour récupérer les noms
-            string query = "SELECT * FROM developpeur";
-            try
+            controller = new FrmHabilitationsController();
+            var test = controller.GetLesDeveloppeurs();
+            MessageBox.Show($"Nombre de devs récupérés : {test.Count}");
+            RemplirListeDeveloppeurs();
+            RemplirListeProfils();
+            EnCourseModifDeveloppeur(false);
+            EnCoursModifPwd(false);
+        }
+
+        /// <summary>
+        /// Affiche les développeurs
+        /// </summary>
+        private void RemplirListeDeveloppeurs()
+        {
+            List<Developpeur> lesDeveloppeurs = controller.GetLesDeveloppeurs();
+            bdgDeveloppeurs.DataSource = lesDeveloppeurs;
+            dgvDeveloppeurs.DataSource = bdgDeveloppeurs;
+            dgvDeveloppeurs.Columns["iddeveloppeur"].Visible = false;
+            dgvDeveloppeurs.Columns["pwd"].Visible = false;
+            dgvDeveloppeurs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        /// <summary>
+        /// Affiche les profils
+        /// </summary>
+        private void RemplirListeProfils()
+        {
+            List<Profil> lesProfils = controller.GetLesProfils();
+            bdgProfils.DataSource = lesProfils;
+            cboProfil.DataSource = bdgProfils;
+        }
+
+        /// <summary>
+        ///  Demande de modification d'un développeur
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+
+        private void btnDemandeModifDev_Click(object sender, EventArgs e)
+        {
+
+            if (dgvDeveloppeurs.SelectedRows.Count > 0)
             {
-                MySqlConnection connection = new MySqlConnection(connectionString);
-                connection.Open();
-                MySqlCommand command = new MySqlCommand(query, connection);
-                MySqlDataReader reader = command.ExecuteReader();
+                EnCourseModifDeveloppeur(true);
+                Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
+                txtNom.Text = developpeur.Nom;
+                txtPrenom.Text = developpeur.Prenom;
+                txtTel.Text = developpeur.Tel;
+                txtMail.Text = developpeur.Mail;
+                cboProfil.SelectedIndex = cboProfil.FindStringExact(developpeur.Profil.Nom);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Erreur : " + ex.Message);
+                MessageBox.Show("Une ligne doit être sélectionnée.", "Information");
             }
         }
-*/
+
+        private void btnDemandeSupprDev_Click(object sender, EventArgs e)
+        {
+
+            if (dgvDeveloppeurs.SelectedRows.Count > 0)
+            {
+                Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
+                if (MessageBox.Show("Voulez-vous vraiment supprimer " + developpeur.Nom + " " + developpeur.Prenom + " ?", "Confirmation de suppression", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    controller.DelDeveloppeur(developpeur);
+                    RemplirListeDeveloppeurs();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Une ligne doit être sélectionnée.", "Information");
+            }
+        }
+
+        private void btnDemandeChangePwd_Click(object sender, EventArgs e)
+        {
+            if (dgvDeveloppeurs.SelectedRows.Count > 0)
+            {
+                EnCoursModifPwd(true);
+            }
+            else
+            {
+                MessageBox.Show("Une ligne doit être sélectionnée.", "Information");
+            }
+        }
+
+        private void btnEnregDev_Click(object sender, EventArgs e)
+        {
+
+            if (!txtNom.Text.Equals("") && !txtPrenom.Text.Equals("") && !txtTel.Text.Equals("") && !txtMail.Text.Equals("") && cboProfil.SelectedIndex != -1)
+            {
+                Profil profil = (Profil)bdgProfils.List[bdgProfils.Position];
+                if (enCoursDeModifDeveloppeur)
+                {
+                    Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
+                    developpeur.Nom = txtNom.Text;
+                    developpeur.Prenom = txtPrenom.Text;
+                    developpeur.Tel = txtTel.Text;
+                    developpeur.Mail = txtMail.Text;
+                    developpeur.Profil = profil;
+                    controller.UpdateDeveloppeur(developpeur);
+                }
+                else
+                {
+                    Developpeur developpeur = new Developpeur(0, txtNom.Text, txtPrenom.Text, txtTel.Text, txtMail.Text, profil);
+                    controller.AddDeveloppeur(developpeur);
+                }
+                RemplirListeDeveloppeurs();
+                EnCourseModifDeveloppeur(false);
+            }
+            else
+            {
+                MessageBox.Show("Tous les champs doivent être remplis.", "Information");
+            }
+        }
+
+        private void btnAnnulDev_Click(object sender, EventArgs e)
+        {
+
+            if (MessageBox.Show("Voulez-vous vraiment annuler ?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                EnCourseModifDeveloppeur(false);
+            }
+        }
+
+        private void btnEnregPwd_Click(object sender, EventArgs e)
+        {
+
+            if (!txtPwd1.Text.Equals("") && !txtPwd2.Text.Equals("") && txtPwd1.Text.Equals(txtPwd2.Text))
+            {
+                Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
+                developpeur.Pwd = txtPwd1.Text;
+                controller.UpdatePwd(developpeur);
+                EnCoursModifPwd(false);
+            }
+            else
+            {
+                MessageBox.Show("Les 2 zones doivent être remplies et de contenu identique", "Information");
+            }
+        }
+
+        private void btnAnnulPwd_Click(object sender, EventArgs e)
+        {
+
+            EnCoursModifPwd(false);
+        }
+
+
+        /// <summary>
+        /// Modification d'affichage suivant si on est en cours de modif ou d'ajout d'un developpeur
+        /// </summary>
+        /// <param name="modif"></param>
+        private void EnCourseModifDeveloppeur(Boolean modif)
+        {
+            enCoursDeModifDeveloppeur = modif;
+            grbLesDeveloppeurs.Enabled = !modif;
+            if (modif)
+            {
+                grbDeveloppeur.Text = "modifier un développeur";
+            }
+            else
+            {
+                grbDeveloppeur.Text = "ajouter un développeur";
+                txtNom.Text = "";
+                txtPrenom.Text = "";
+                txtTel.Text = "";
+                txtMail.Text = "";
+            }
+        }
+
+        /// <summary>
+        /// Modification d'affichage suivant si on est ou non en cours de modif du pwd
+        /// </summary>
+        /// <param name="modif"></param>
+        private void EnCoursModifPwd(Boolean modif)
+        {
+            grbPwd.Enabled = modif;
+            grbLesDeveloppeurs.Enabled = !modif;
+            grbDeveloppeur.Enabled = !modif;
+            txtPwd1.Text = "";
+            txtPwd2.Text = "";
+        }
+
     }
 }
