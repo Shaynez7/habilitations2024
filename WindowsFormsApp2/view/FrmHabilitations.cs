@@ -53,8 +53,6 @@ namespace Habilitations2024.view
         private void Init()
         {
             controller = new FrmHabilitationsController();
-            var test = controller.GetLesDeveloppeurs();
-            MessageBox.Show($"Nombre de devs récupérés : {test.Count}");
             RemplirListeDeveloppeurs();
             RemplirListeProfils();
             EnCourseModifDeveloppeur(false);

@@ -1,4 +1,5 @@
-﻿using Habilitations2024.model;
+﻿using Habilitations2024.dal;
+using Habilitations2024.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace Habilitations2024.dal
 {
-
+    /// <summary>
+    /// Classe permettant de gérer les demandes concernant les developpeurs
+    /// </summary>
     public class DeveloppeurAccess
     {
         /// <summary>
@@ -21,6 +24,40 @@ namespace Habilitations2024.dal
         public DeveloppeurAccess()
         {
             access = Access.GetInstance();
+        }
+
+        /// <summary>
+        /// Controle si l'utillisateur a le droit de se connecter (nom, prénom, pwd et profil "admin")
+        /// </summary>
+        /// <param name="nom"></param>
+        /// <param name="prenom"></param>
+        /// <param name="pwd"></param>
+        /// <returns>vrai si l'utilisateur a le profil "admin"</returns>
+        public Boolean ControleAuthentification(Admin admin)
+        {
+            if (access.Manager != null)
+            {
+                string req = "select * from developpeur d join profil p on d.idprofil=p.idprofil ";
+                req += "where d.nom=@nom and d.prenom=@prenom and pwd=SHA2(@pwd, 256) and p.nom='admin';";
+                Dictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("@nom", admin.Nom);
+                parameters.Add("@prenom", admin.Prenom);
+                parameters.Add("@pwd", admin.Pwd);
+                try
+                {
+                    List<Object[]> records = access.Manager.ReqSelect(req, parameters);
+                    if (records != null)
+                    {
+                        return (records.Count > 0);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(0);
+                }
+            }
+            return false;
         }
 
         /// <summary>
