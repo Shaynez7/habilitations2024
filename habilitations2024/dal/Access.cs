@@ -1,13 +1,15 @@
-﻿using Habilitations2024.bddmanager;
+﻿using habilitations2024.bddmanager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Habilitations2024.dal
+namespace habilitations2024.dal
 {
-
+    /// <summary>
+    /// Singleton : classe d'accès à BddManager
+    /// </summary>
     public class Access
     {
         /// <summary>

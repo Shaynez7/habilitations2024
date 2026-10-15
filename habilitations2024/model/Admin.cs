@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Habilitations2024.model
+﻿
+namespace habilitations2024.model
 {
     /// <summary>
     /// Classe métier interne pour mémoriser les informations d'authentification

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Habilitations2024.view;
 
-namespace Habilitations2024
+namespace habilitations2024
 {
     internal static class Program
     {
@@ -17,7 +16,7 @@ namespace Habilitations2024
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmAuthentification());
+            Application.Run(new view.FrmAuthentification());
         }
     }
 }

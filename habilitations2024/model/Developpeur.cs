@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Habilitations2024.model
+namespace habilitations2024.model
 {
-
     public class Developpeur
     {
         /// <summary>

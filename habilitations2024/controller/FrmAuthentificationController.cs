@@ -1,12 +1,8 @@
-﻿using Habilitations2024.dal;
-using Habilitations2024.model;
+﻿using habilitations2024.dal;
+using habilitations2024.model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Habilitations2024.controller
+namespace habilitations2024.controller
 {
     /// <summary>
     /// Contrôleur de FrmAuthentification

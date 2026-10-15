@@ -1,17 +1,9 @@
-﻿using Habilitations2024.controller;
-using Habilitations2024.model;
-using Habilitations2024.view;
+﻿using habilitations2024.controller;
+using habilitations2024.model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Habilitations2024.view
+namespace habilitations2024.view
 {
     /// <summary>
     /// Fenêtre d'authentification (seuls les developpeurs profil "admin" peuvent accéder à l'application)

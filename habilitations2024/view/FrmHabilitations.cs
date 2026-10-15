@@ -1,22 +1,22 @@
-﻿using Habilitations2024.controller;
-using Habilitations2024.model;
-using MySql.Data.MySqlClient;
+﻿using habilitations2024.controller;
+using habilitations2024.model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Habilitations2024.view
+namespace habilitations2024.view
 {
+    /// <summary>
+    /// Fenêtre d'affichage des développeurs et de leurs profils
+    /// </summary>
     public partial class FrmHabilitations : Form
     {
-
         /// <summary>
         /// Booléen pour savoir si une modification est demandée
         /// </summary>
@@ -37,14 +37,11 @@ namespace Habilitations2024.view
         /// <summary>
         /// construction des composants graphiques et appel des autres initialisations
         /// </summary>
-        /// 
-
         public FrmHabilitations()
         {
             InitializeComponent();
             Init();
         }
-
 
         /// <summary>
         /// Initialisations :
@@ -87,11 +84,8 @@ namespace Habilitations2024.view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
-
-        private void btnDemandeModifDev_Click(object sender, EventArgs e)
+        private void BtnDemandeModifDev_Click(object sender, EventArgs e)
         {
-
             if (dgvDeveloppeurs.SelectedRows.Count > 0)
             {
                 EnCourseModifDeveloppeur(true);
@@ -108,9 +102,13 @@ namespace Habilitations2024.view
             }
         }
 
-        private void btnDemandeSupprDev_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Demande de suppression d'un développeur
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDemandeSupprDev_Click(object sender, EventArgs e)
         {
-
             if (dgvDeveloppeurs.SelectedRows.Count > 0)
             {
                 Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
@@ -126,7 +124,12 @@ namespace Habilitations2024.view
             }
         }
 
-        private void btnDemandeChangePwd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Demande de changement du pwd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnDemandeChangePwd_Click(object sender, EventArgs e)
         {
             if (dgvDeveloppeurs.SelectedRows.Count > 0)
             {
@@ -138,9 +141,13 @@ namespace Habilitations2024.view
             }
         }
 
-        private void btnEnregDev_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Demande d'enregistrement de l'ajout ou de la modification d'un développeur
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnEnregDev_Click(object sender, EventArgs e)
         {
-
             if (!txtNom.Text.Equals("") && !txtPrenom.Text.Equals("") && !txtTel.Text.Equals("") && !txtMail.Text.Equals("") && cboProfil.SelectedIndex != -1)
             {
                 Profil profil = (Profil)bdgProfils.List[bdgProfils.Position];
@@ -168,24 +175,40 @@ namespace Habilitations2024.view
             }
         }
 
-        private void btnAnnulDev_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Annule la demande d'ajout ou de modification d'un développeur
+        /// Vide les zones de saisie du développeur
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAnnulDev_Click(object sender, EventArgs e)
         {
-
             if (MessageBox.Show("Voulez-vous vraiment annuler ?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 EnCourseModifDeveloppeur(false);
             }
         }
 
-        private void btnEnregPwd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Demande d'enregistrement du nouveau pwd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnEnregPwd_Click(object sender, EventArgs e)
         {
-
             if (!txtPwd1.Text.Equals("") && !txtPwd2.Text.Equals("") && txtPwd1.Text.Equals(txtPwd2.Text))
             {
-                Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
-                developpeur.Pwd = txtPwd1.Text;
-                controller.UpdatePwd(developpeur);
-                EnCoursModifPwd(false);
+                if (controller.PwdFort(txtPwd1.Text))
+                {
+                    Developpeur developpeur = (Developpeur)bdgDeveloppeurs.List[bdgDeveloppeurs.Position];
+                    developpeur.Pwd = txtPwd1.Text;
+                    controller.UpdatePwd(developpeur);
+                    EnCoursModifPwd(false);
+                }
+                else
+                {
+                    MessageBox.Show("Le pwd doit contenir entre 8 et 30 caractères constitués de : au moins une minuscule, une majuscule, un chiffre, un caractère spécial et pas d'espace", "Information");
+                }
             }
             else
             {
@@ -193,12 +216,15 @@ namespace Habilitations2024.view
             }
         }
 
-        private void btnAnnulPwd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Annulation de demande d'enregistrement d'un nouveau pwd
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnAnnulPwd_Click(object sender, EventArgs e)
         {
-
             EnCoursModifPwd(false);
         }
-
 
         /// <summary>
         /// Modification d'affichage suivant si on est en cours de modif ou d'ajout d'un developpeur

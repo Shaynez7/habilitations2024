@@ -1,13 +1,15 @@
-﻿using Habilitations2024.model;
+﻿using habilitations2024.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Habilitations2024.dal
+namespace habilitations2024.dal
 {
-
+    /// <summary>
+    /// Classe permettant de gérer les demandes concernant les profils
+    /// </summary>
     public class ProfilAccess
     {
         /// <summary>

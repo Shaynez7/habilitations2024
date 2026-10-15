@@ -1,11 +1,8 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
-namespace Habilitations2024.bddmanager
+namespace habilitations2024.bddmanager
 {
     /// <summary>
     /// Singleton : connexion à la base de données et exécution des requêtes
@@ -93,7 +90,6 @@ namespace Habilitations2024.bddmanager
             reader.Close();
             return records;
         }
-
 
     }
 }
