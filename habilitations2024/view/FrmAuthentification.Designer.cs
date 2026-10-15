@@ -113,6 +113,7 @@
             this.Controls.Add(this.txtNom);
             this.Name = "FrmAuthentification";
             this.Text = "Authentification";
+            this.Load += new System.EventHandler(this.FrmAuthentification_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

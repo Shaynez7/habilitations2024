@@ -33,6 +33,11 @@ namespace habilitations2024.view
             controller = new FrmAuthentificationController();
         }
 
+        private void FrmAuthentification_Load(object sender, EventArgs e)
+        {
+            
+        }
+
         /// <summary>
         /// Demande au controleur de controler l'authentification
         /// </summary>
